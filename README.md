@@ -3,9 +3,9 @@
 
 Se implemento un software para traducir las instrucciones del **PIC16F8XX** a código maquina, las instrucciones del pic tienen una longitud de 14 bits y siendo el set de instrucciondes de 35.
 
-El set de instrcciones lo puedes en contrar en: (PIC16F(XX))[https://www.unioviedo.es/ate/alberto/manualPic.pdf], Pag. 24
----------------------------------------------------------------------------
+El set de instrcciones lo puedes en contrar en: (PIC16FXX)[https://www.unioviedo.es/ate/alberto/manualPic.pdf], Pag. 24
 ****************************************************************************
+
 **INSTRUCCIONES DE USO**
 
 
