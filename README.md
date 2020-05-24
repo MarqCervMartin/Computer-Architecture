@@ -1,5 +1,5 @@
-##Translator
-#Assembly language to Machine code.
+## Translator
+# Assembly language to Machine code.
 
 
 A simple translator was developed that ideally reads the instructions based on the **PIC16F** family of microcontrollers into machine code, the instructions in the pic are 14 bits long and the instruction set is 35.
