@@ -208,16 +208,16 @@ public class JFTraductor extends javax.swing.JFrame {
                 return "00 0110 "+generar1Bit()+" "+generar7Bits()+"\n";
             //BIT-ORIENTED FILE REGISTER OPERATIONS
             case "BCF":
-                return "01 00bb bfff ffff\n";
+                return "01 00 "+generar3Bits()+" "+generar7Bits()+"\n";
             case "BSF":
-                return "01 01bb bfff ffff\n";
+                return "01 01 "+generar3Bits()+" "+generar7Bits()+"\n";
             case "BTFSC":
-                return "01 10bb bfff ffff\n";
+                return "01 10 "+generar3Bits()+" "+generar7Bits()+"\n";
             case "BTFSS":
-                return "01 11bb bfff ffff\n";
+                return "01 11 "+generar3Bits()+" "+generar7Bits()+"\n";
             //LITERAL AND CONTROL OPERATIONS
             case "ADDLW":
-                return "11 111x kkkk kkkk\n";
+                return "11 1110 kkkk kkkk\n";
             case "ANDLW":
                 return "11 1001 kkkk kkkk\n";
             case "CALL":
@@ -229,17 +229,17 @@ public class JFTraductor extends javax.swing.JFrame {
             case "IORLW":
                 return "11 1000 kkkk kkkk\n";
             case "MOVLW":
-                return "11 00xx kkkk kkkk\n";
+                return "11 0000 kkkk kkkk\n";
             case "RETFIE":
                 return "00 0000 0000 1001\n";
             case "RETLW":
-                return "11 01xx kkkk kkkk\n";
+                return "11 0100 kkkk kkkk\n";
             case "RETURN":
                 return "00 0000 0000 1000\n";
             case "SLEEP":
                 return "00 0000 0110 0011\n";
             case "SUBLW":
-                return "11 110x kkkk kkkk\n";
+                return "11 1100 kkkk kkkk\n";
             case "XORLW":
                 return "11 1010 kkkk kkkk\n";
             default:
@@ -280,6 +280,24 @@ public class JFTraductor extends javax.swing.JFrame {
         }
         
         return sieteBits;
+    }
+    public String generar3Bits(){
+        String tresBits = "";
+        int numero = (int) (Math.random() * 7) + 1;
+        // completar los 7 bits   1  2   4    8   16  32  64
+        if(numero <2){
+            tresBits = "00 1";
+        }else{//2bits el mayor puede ser 3
+            if(numero <4){
+                tresBits="0 "+Integer.toBinaryString(numero);
+            }else{//3bits el mayor puede ser 7
+                if(numero<8){
+                    tresBits=Integer.toBinaryString(numero);
+                }
+            }
+        }
+        
+        return tresBits;
     }
     public String generar1Bit(){
         boolean b = Math.random() < 0.5;
