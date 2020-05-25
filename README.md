@@ -1,9 +1,10 @@
-# Traductor de ensamblador a codigo máquina
+## Translator
+# Assembly language to Machine code.
 
 
-Se implemento un software para traducir las instrucciones del **PIC16F8XX** a código maquina, las instrucciones del pic tienen una longitud de 14 bits y siendo el set de instrucciondes de 35.
+A simple translator was developed that ideally reads the instructions based on the **PIC16F** family of microcontrollers into machine code, the instructions in the pic are 14 bits long and the instruction set is 35.
 
-El set de instrcciones lo puedes en contrar en pag. 24 de [PIC16FXX](https://www.unioviedo.es/ate/alberto/manualPic.pdf).
+INSTRUCTION SET SUMMARY page. 227 de [PIC16FXXX](http://ww1.microchip.com/downloads/en/devicedoc/41291d.pdf).
 ****************************************************************************
 
 **INSTRUCCIONES DE USO**
@@ -26,7 +27,7 @@ El set de instrcciones lo puedes en contrar en pag. 24 de [PIC16FXX](https://www
 
 ****************************************************************************
  
- **Creado por:**
+ **Development by:**
 
  + *Martin Marquez Cervantes* 
- + *Rogelio Ortega Barrera* 
+ + *Ing.Rogelio Ortega Barrera* 
