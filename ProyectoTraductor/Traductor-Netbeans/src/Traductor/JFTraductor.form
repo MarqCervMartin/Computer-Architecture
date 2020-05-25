@@ -136,7 +136,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="BtnEnsamblar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ensamblar"/>
+        <Property name="label" type="java.lang.String" value="Traducir"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnEnsamblarActionPerformed"/>

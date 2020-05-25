@@ -2,17 +2,13 @@ package Traductor;
 import java.io.File;
 import java.util.Arrays;
 import javax.swing.*;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
- * @author Martín
+ * @author Martín, Royer
  */
 public class JFTraductor extends javax.swing.JFrame {
+    //Instancias de JFile Chooser, Archivo y clase MetodoEnsamblaje
     JFileChooser seleccionado = new JFileChooser();
     File archivo;
     MetodoEnsamblaje Ensamblaje = new MetodoEnsamblaje();
@@ -69,7 +65,7 @@ public class JFTraductor extends javax.swing.JFrame {
         TxtAreaObjeto.setRows(5);
         jScrollPane2.setViewportView(TxtAreaObjeto);
 
-        BtnEnsamblar.setText("Ensamblar");
+        BtnEnsamblar.setLabel("Traducir");
         BtnEnsamblar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnEnsamblarActionPerformed(evt);
@@ -180,7 +176,7 @@ public class JFTraductor extends javax.swing.JFrame {
         if(seleccionado.showDialog(this,"Abrir Programa Fuente") == JFileChooser.APPROVE_OPTION ){
             archivo = seleccionado.getSelectedFile();
             if(archivo.canRead() ){
-                if(archivo.getName().endsWith("txt")){
+                if(archivo.getName().endsWith("asm")){
                     String contenido = Ensamblaje.AbrirTexto(archivo);
                     TxtAreaFuente.setText(contenido);
                 }else{
@@ -195,26 +191,12 @@ public class JFTraductor extends javax.swing.JFrame {
          if(seleccionado.showDialog(this,"Ensamblar Código Fuente") == JFileChooser.APPROVE_OPTION ){
             archivo = seleccionado.getSelectedFile();
             String contenido = TxtAreaFuente.getText();
-            //Aqui se convierte en hexadecimal
-            //  Que siempre el profe no lo quizo así
-            /*
-            String arrS[];
-            int tamaño = contenido.length();
-            arrS = new String[tamaño];
-            for(int i=0;i<contenido.length();i++){
-                int tm = contenido.codePointAt(i);
-                String HX = Integer.toHexString(tm);
-                arrS[i] = HX;
-         
+            String[] arrSplit = contenido.split("\\n"); 
+            contenido = "";
+            for(int i=0;i<arrSplit.length;i++){
+                contenido += Instruccion(arrSplit[i]);
             }
-             String datosArray = "";
-            for (String elemento: arrS) {
-                datosArray += elemento + "";
-             }*/
-              //System.out.println(datosArray);
-              /*
-            contenido =datosArray; //Arrays.toString(datosArray);*/
-              contenido = Instruccion(contenido);
+            
             String respuesta = Ensamblaje.EnsamblarTxt(archivo, contenido);
             if(respuesta !=null ){
                 JOptionPane.showMessageDialog(null, respuesta);
@@ -230,82 +212,128 @@ public class JFTraductor extends javax.swing.JFrame {
     public String Instruccion(String conte){
         
         switch(conte){
+            //BYTE-ORIENTED FILE REGISTER OPERATIONS
+            //Generamos numeros entre 0-127 para los bits de registro
             case "ADDWF":
-                return "00 0111 dfff ffff";
+                return "00 0111 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "ANDWF":
-                return "00 0101 dfff ffff";
+                return "00 0101 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "CLRF":
-                return "00 0001 1fff ffff";
+                return "00 0001 1 "+generar7Bits()+"\n";
             case "CLRW":
-                return "00 0001 0xxx xxxx";
+                return "00 0001 0000 0000\n";
             case "COMF":
-                return "00 1001 dfff ffff";
+                return "00 1001 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "DECF":
-                return "00 0011 dfff ffff";
+                return "00 0011 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "DECFSZ":
-                return "00 1011 dfff ffff";
+                return "00 1011 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "INCF":
-                return "00 1010 dfff ffff";
+                return "00 1010 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "INCFSZ":
-                return "00 1111 dfff ffff";
+                return "00 1111 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "IORWF":
-                return "00 0100 dfff ffff";
+                return "00 0100 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "MOVF":
-                return "00 1000 dfff ffff";
+                return "00 1000 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "MOVWF":
-                return "00 0000 1fff ffff";
+                return "00 0000 1 "+generar7Bits()+"\n";
             case "NOP":
-                return "00 0000 0xx0 0000";
+                return "00 0000 0000 0000\n";
             case "RLF":
-                return "00 1101 dfff ffff";
+                return "00 1101 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "RRF":
-                return "00 1100 dfff ffff";
+                return "00 1100 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "SUBWF":
-                return "00 0010 dfff ffff";
+                return "00 0010 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "SWAPF":
-                return "00 1110 dfff ffff";
+                return "00 1110 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "XORWF":
-                return "00 0110 dfff ffff";
+                return "00 0110 "+generar1Bit()+" "+generar7Bits()+"\n";
+            //BIT-ORIENTED FILE REGISTER OPERATIONS
             case "BCF":
-                return "01 00bb bfff ffff";
+                return "01 00bb bfff ffff\n";
             case "BSF":
-                return "01 01bb bfff ffff";
+                return "01 01bb bfff ffff\n";
             case "BTFSC":
-                return "01 10bb bfff ffff";
+                return "01 10bb bfff ffff\n";
             case "BTFSS":
-                return "01 11bb bfff ffff";
+                return "01 11bb bfff ffff\n";
+            //LITERAL AND CONTROL OPERATIONS
             case "ADDLW":
-                return "11 111x kkkk kkkk";
+                return "11 111x kkkk kkkk\n";
             case "ANDLW":
-                return "11 1001 kkkk kkkk";
+                return "11 1001 kkkk kkkk\n";
             case "CALL":
-                return "10 0kkk kkkk kkkk";
+                return "10 0kkk kkkk kkkk\n";
             case "CLRWDT":
-                return "00 0000 0110 0100";
+                return "00 0000 0110 0100\n";
             case "GOTO":
-                return "10 1kkk kkkk kkkk";
+                return "10 1kkk kkkk kkkk\n";
             case "IORLW":
-                return "11 1000 kkkk kkkk";
+                return "11 1000 kkkk kkkk\n";
             case "MOVLW":
-                return "11 00xx kkkk kkkk";
+                return "11 00xx kkkk kkkk\n";
             case "RETFIE":
-                return "00 0000 0000 1001";
+                return "00 0000 0000 1001\n";
             case "RETLW":
-                return "11 01xx kkkk kkkk";
+                return "11 01xx kkkk kkkk\n";
             case "RETURN":
-                return "00 0000 0000 1000";
+                return "00 0000 0000 1000\n";
             case "SLEEP":
-                return "00 0000 0110 0011";
+                return "00 0000 0110 0011\n";
             case "SUBLW":
-                return "11 110x kkkk kkkk";
+                return "11 110x kkkk kkkk\n";
             case "XORLW":
-                return "11 1010 kkkk kkkk";
+                return "11 1010 kkkk kkkk\n";
             default:
                 JOptionPane.showMessageDialog(null, "Instrucción no valida");
 
         }
         return null;
     }
+    public String generar7Bits(){
+        String sieteBits = "";
+        int numero = (int) (Math.random() * 127) + 1;
+        // completar los 7 bits   1  2   4    8   16  32  64
+        if(numero <2){
+            sieteBits = "0000001";
+        }else{//2bits el mayor puede ser 3
+            if(numero <4){
+                sieteBits="00000"+Integer.toBinaryString(numero);
+            }else{//3bits el mayor puede ser 7
+                if(numero<8){
+                    sieteBits="0000"+Integer.toBinaryString(numero);
+                }else{//4bits el mayor es 15
+                    if(numero<16){
+                        sieteBits="000"+Integer.toBinaryString(numero);
+                    }else{//5bits el mayor es 31
+                        if(numero<32){
+                            sieteBits="00"+Integer.toBinaryString(numero);
+                        }else{//6bits el mayor es 63
+                            if(numero<64){
+                                sieteBits="0"+Integer.toBinaryString(numero);
+                            }else{
+                                    sieteBits=Integer.toBinaryString(numero);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return sieteBits;
+    }
+    public String generar1Bit(){
+        boolean b = Math.random() < 0.5;
+        if(b==true){
+            return "1";
+        }else{
+            return "0";
+        }
+    }
+    
+   
     private void BtnDesensamblarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDesensamblarActionPerformed
         // TODO add your handling code here:
         if(seleccionado.showDialog(this,"Desensamblar Código Objeto") == JFileChooser.APPROVE_OPTION ){

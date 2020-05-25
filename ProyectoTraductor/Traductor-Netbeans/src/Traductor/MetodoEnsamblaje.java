@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Traductor;
 import java.io.*;
 /**
@@ -16,7 +11,7 @@ public class MetodoEnsamblaje {
     public MetodoEnsamblaje(){
 
     }
-//Abrir archivo texto
+    //Abrir archivo texto y retorna todo en cadena de caracteres
     public String AbrirTexto(File archivo){
         String contenido="";
         try{
@@ -24,13 +19,14 @@ public class MetodoEnsamblaje {
             int asc;
             while((asc = entrada.read())!=-1 ){
                 char caracter = (char)asc;
-	contenido+= caracter;
+                contenido+= caracter;
             }
         }catch(Exception e){
 
         }
         return contenido;
     }
+    //
     public String EnsamblarTxt(File archivo, String contenido){
         String respuesta = null;
         try{
