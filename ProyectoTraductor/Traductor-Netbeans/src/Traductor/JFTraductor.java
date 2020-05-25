@@ -2,17 +2,13 @@ package Traductor;
 import java.io.File;
 import java.util.Arrays;
 import javax.swing.*;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
- * @author Martín
+ * @author Martín, Royer
  */
 public class JFTraductor extends javax.swing.JFrame {
+    //Instancias de JFile Chooser, Archivo y clase MetodoEnsamblaje
     JFileChooser seleccionado = new JFileChooser();
     File archivo;
     MetodoEnsamblaje Ensamblaje = new MetodoEnsamblaje();
@@ -44,15 +40,17 @@ public class JFTraductor extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         TxtAreaObjeto = new javax.swing.JTextArea();
         BtnEnsamblar = new javax.swing.JButton();
-        BtnDesensamblar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        BtnDesensamblar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         BntLimpiarF = new javax.swing.JButton();
         BtnLimpiarO = new javax.swing.JButton();
         BtnAbrirO = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ensamblador");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         BtnAbrirF.setText("Abrir Archivo");
         BtnAbrirF.addActionListener(new java.awt.event.ActionListener() {
@@ -60,32 +58,41 @@ public class JFTraductor extends javax.swing.JFrame {
                 BtnAbrirFActionPerformed(evt);
             }
         });
+        getContentPane().add(BtnAbrirF, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 419, 115, -1));
 
         TxtAreaFuente.setColumns(20);
         TxtAreaFuente.setRows(5);
         jScrollPane1.setViewportView(TxtAreaFuente);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(33, 34, 260, 367));
+
         TxtAreaObjeto.setColumns(20);
         TxtAreaObjeto.setRows(5);
         jScrollPane2.setViewportView(TxtAreaObjeto);
 
-        BtnEnsamblar.setText("Ensamblar");
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 260, 367));
+
+        BtnEnsamblar.setText("Traducir  -->");
         BtnEnsamblar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnEnsamblarActionPerformed(evt);
             }
         });
+        getContentPane().add(BtnEnsamblar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 40, 230, 50));
 
-        BtnDesensamblar.setText("Desensamblar");
+        jLabel1.setText("Programa Fuente");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 12, -1, -1));
+
+        BtnDesensamblar.setText("<--- Traducir");
         BtnDesensamblar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnDesensamblarActionPerformed(evt);
             }
         });
-
-        jLabel1.setText("Programa Fuente");
+        getContentPane().add(BtnDesensamblar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 350, 230, 50));
 
         jLabel2.setText("Programa Objeto");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
 
         BntLimpiarF.setText("Limpiar");
         BntLimpiarF.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +100,7 @@ public class JFTraductor extends javax.swing.JFrame {
                 BntLimpiarFActionPerformed(evt);
             }
         });
+        getContentPane().add(BntLimpiarF, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 419, 100, -1));
 
         BtnLimpiarO.setText("Limpiar");
         BtnLimpiarO.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +108,7 @@ public class JFTraductor extends javax.swing.JFrame {
                 BtnLimpiarOActionPerformed(evt);
             }
         });
+        getContentPane().add(BtnLimpiarO, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 420, 100, -1));
 
         BtnAbrirO.setText("Abrir Archivo");
         BtnAbrirO.addActionListener(new java.awt.event.ActionListener() {
@@ -107,70 +116,11 @@ public class JFTraductor extends javax.swing.JFrame {
                 BtnAbrirOActionPerformed(evt);
             }
         });
+        getContentPane().add(BtnAbrirO, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 420, 117, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(114, 114, 114))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(BntLimpiarF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnAbrirF, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BtnLimpiarO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnAbrirO, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(BtnEnsamblar)
-                                .addGap(26, 26, 26))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(BtnDesensamblar)
-                                .addGap(18, 18, 18)))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(34, 34, 34))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(BtnEnsamblar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-                        .addComponent(BtnDesensamblar)
-                        .addGap(138, 138, 138))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane2))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnAbrirF)
-                    .addComponent(BtnLimpiarO)
-                    .addComponent(BntLimpiarF)
-                    .addComponent(BtnAbrirO))
-                .addGap(20, 20, 20))
-        );
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/PIC.jpeg"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 230, 220));
+        jLabel3.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -180,7 +130,7 @@ public class JFTraductor extends javax.swing.JFrame {
         if(seleccionado.showDialog(this,"Abrir Programa Fuente") == JFileChooser.APPROVE_OPTION ){
             archivo = seleccionado.getSelectedFile();
             if(archivo.canRead() ){
-                if(archivo.getName().endsWith("txt")){
+                if(archivo.getName().endsWith("asm")){
                     String contenido = Ensamblaje.AbrirTexto(archivo);
                     TxtAreaFuente.setText(contenido);
                 }else{
@@ -195,27 +145,15 @@ public class JFTraductor extends javax.swing.JFrame {
          if(seleccionado.showDialog(this,"Ensamblar Código Fuente") == JFileChooser.APPROVE_OPTION ){
             archivo = seleccionado.getSelectedFile();
             String contenido = TxtAreaFuente.getText();
-            //Aqui se convierte en hexadecimal
-            //  Que siempre el profe no lo quizo así
-            /*
-            String arrS[];
-            int tamaño = contenido.length();
-            arrS = new String[tamaño];
-            for(int i=0;i<contenido.length();i++){
-                int tm = contenido.codePointAt(i);
-                String HX = Integer.toHexString(tm);
-                arrS[i] = HX;
-         
+            String[] arrSplit = contenido.split("\\n"); 
+            contenido = "";
+            /* Hacer el paso de lectura del archivo para guardar la conversion a binario*/
+            for(int i=0;i<arrSplit.length;i++){
+                contenido += Instruccion(arrSplit[i]);
             }
-             String datosArray = "";
-            for (String elemento: arrS) {
-                datosArray += elemento + "";
-             }*/
-              //System.out.println(datosArray);
-              /*
-            contenido =datosArray; //Arrays.toString(datosArray);*/
-              contenido = Instruccion(contenido);
+            
             String respuesta = Ensamblaje.EnsamblarTxt(archivo, contenido);
+            /*Reestriccion de formato de archivo, solo formato txt*/
             if(respuesta !=null ){
                 JOptionPane.showMessageDialog(null, respuesta);
                 TxtAreaObjeto.setText(contenido);
@@ -228,84 +166,131 @@ public class JFTraductor extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnEnsamblarActionPerformed
 
     public String Instruccion(String conte){
-        
+        /* Compare instruction for Bit a Bit */
         switch(conte){
+            //BYTE-ORIENTED FILE REGISTER OPERATIONS
+            //Generamos numeros entre 0-127 para los bits de registro
             case "ADDWF":
-                return "00 0111 dfff ffff";
+                return "00 0111 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "ANDWF":
-                return "00 0101 dfff ffff";
+                return "00 0101 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "CLRF":
-                return "00 0001 1fff ffff";
+                return "00 0001 1 "+generar7Bits()+"\n";
             case "CLRW":
-                return "00 0001 0xxx xxxx";
+                return "00 0001 0000 0000\n";
             case "COMF":
-                return "00 1001 dfff ffff";
+                return "00 1001 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "DECF":
-                return "00 0011 dfff ffff";
+                return "00 0011 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "DECFSZ":
-                return "00 1011 dfff ffff";
+                return "00 1011 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "INCF":
-                return "00 1010 dfff ffff";
+                return "00 1010 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "INCFSZ":
-                return "00 1111 dfff ffff";
+                return "00 1111 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "IORWF":
-                return "00 0100 dfff ffff";
+                return "00 0100 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "MOVF":
-                return "00 1000 dfff ffff";
+                return "00 1000 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "MOVWF":
-                return "00 0000 1fff ffff";
+                return "00 0000 1 "+generar7Bits()+"\n";
             case "NOP":
-                return "00 0000 0xx0 0000";
+                return "00 0000 0000 0000\n";
             case "RLF":
-                return "00 1101 dfff ffff";
+                return "00 1101 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "RRF":
-                return "00 1100 dfff ffff";
+                return "00 1100 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "SUBWF":
-                return "00 0010 dfff ffff";
+                return "00 0010 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "SWAPF":
-                return "00 1110 dfff ffff";
+                return "00 1110 "+generar1Bit()+" "+generar7Bits()+"\n";
             case "XORWF":
-                return "00 0110 dfff ffff";
+                return "00 0110 "+generar1Bit()+" "+generar7Bits()+"\n";
+            //BIT-ORIENTED FILE REGISTER OPERATIONS
             case "BCF":
-                return "01 00bb bfff ffff";
+                return "01 00bb bfff ffff\n";
             case "BSF":
-                return "01 01bb bfff ffff";
+                return "01 01bb bfff ffff\n";
             case "BTFSC":
-                return "01 10bb bfff ffff";
+                return "01 10bb bfff ffff\n";
             case "BTFSS":
-                return "01 11bb bfff ffff";
+                return "01 11bb bfff ffff\n";
+            //LITERAL AND CONTROL OPERATIONS
             case "ADDLW":
-                return "11 111x kkkk kkkk";
+                return "11 111x kkkk kkkk\n";
             case "ANDLW":
-                return "11 1001 kkkk kkkk";
+                return "11 1001 kkkk kkkk\n";
             case "CALL":
-                return "10 0kkk kkkk kkkk";
+                return "10 0kkk kkkk kkkk\n";
             case "CLRWDT":
-                return "00 0000 0110 0100";
+                return "00 0000 0110 0100\n";
             case "GOTO":
-                return "10 1kkk kkkk kkkk";
+                return "10 1kkk kkkk kkkk\n";
             case "IORLW":
-                return "11 1000 kkkk kkkk";
+                return "11 1000 kkkk kkkk\n";
             case "MOVLW":
-                return "11 00xx kkkk kkkk";
+                return "11 00xx kkkk kkkk\n";
             case "RETFIE":
-                return "00 0000 0000 1001";
+                return "00 0000 0000 1001\n";
             case "RETLW":
-                return "11 01xx kkkk kkkk";
+                return "11 01xx kkkk kkkk\n";
             case "RETURN":
-                return "00 0000 0000 1000";
+                return "00 0000 0000 1000\n";
             case "SLEEP":
-                return "00 0000 0110 0011";
+                return "00 0000 0110 0011\n";
             case "SUBLW":
-                return "11 110x kkkk kkkk";
+                return "11 110x kkkk kkkk\n";
             case "XORLW":
-                return "11 1010 kkkk kkkk";
+                return "11 1010 kkkk kkkk\n";
             default:
                 JOptionPane.showMessageDialog(null, "Instrucción no valida");
 
         }
         return null;
     }
+    /* Completar los 7 bits restantes de las instrucciones */ 
+    public String generar7Bits(){
+        String sieteBits = "";
+        int numero = (int) (Math.random() * 127) + 1;
+        // completar los 7 bits   1  2   4    8   16  32  64
+        if(numero <2){
+            sieteBits = "0000001";
+        }else{//2bits el mayor puede ser 3
+            if(numero <4){
+                sieteBits="00000"+Integer.toBinaryString(numero);
+            }else{//3bits el mayor puede ser 7
+                if(numero<8){
+                    sieteBits="0000"+Integer.toBinaryString(numero);
+                }else{//4bits el mayor es 15
+                    if(numero<16){
+                        sieteBits="000"+Integer.toBinaryString(numero);
+                    }else{//5bits el mayor es 31
+                        if(numero<32){
+                            sieteBits="00"+Integer.toBinaryString(numero);
+                        }else{//6bits el mayor es 63
+                            if(numero<64){
+                                sieteBits="0"+Integer.toBinaryString(numero);
+                            }else{
+                                    sieteBits=Integer.toBinaryString(numero);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return sieteBits;
+    }
+    public String generar1Bit(){
+        boolean b = Math.random() < 0.5;
+        if(b==true){
+            return "1";
+        }else{
+            return "0";
+        }
+    }
+    
+   
     private void BtnDesensamblarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDesensamblarActionPerformed
         // TODO add your handling code here:
         if(seleccionado.showDialog(this,"Desensamblar Código Objeto") == JFileChooser.APPROVE_OPTION ){
@@ -418,6 +403,7 @@ public class JFTraductor extends javax.swing.JFrame {
     private javax.swing.JTextArea TxtAreaObjeto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
