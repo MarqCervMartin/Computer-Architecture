@@ -1,7 +1,9 @@
 package Traductor;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,8 +12,40 @@ import javax.swing.*;
 public class JFTraductor extends javax.swing.JFrame {
     //Instancias de JFile Chooser, Archivo y clase MetodoEnsamblaje
     JFileChooser seleccionado = new JFileChooser();
+    DefaultTableModel modelo;
     File archivo;
     MetodoEnsamblaje Ensamblaje = new MetodoEnsamblaje();
+    
+    
+    //Variables que segmentaran el código ejemplo: ADDWF 0x5C,F en "ADDWF","0x5C","F"
+    private String opCode = "";
+    private String d = "";
+    private String bitFile = "";
+    
+    public String getOpCode() {
+        return opCode;
+    }
+
+    public void setOpCode(String opCode) {
+        this.opCode = opCode;
+    }
+
+    public String getD() {
+        return d;
+    }
+
+    public void setD(String d) {
+        this.d = d;
+    }
+
+    public String getBitFile() {
+        return bitFile;
+    }
+
+    public void setBitFile(String bitFile) {
+        this.bitFile = bitFile;
+    }
+    
     
     
     /**
@@ -23,6 +57,12 @@ public class JFTraductor extends javax.swing.JFrame {
         TxtAreaFuente.setWrapStyleWord(true);
         TxtAreaObjeto.setLineWrap(true);
         TxtAreaObjeto.setWrapStyleWord(true);
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Linea");
+        modelo.addColumn("OpCode");
+        modelo.addColumn("Bit d");
+        modelo.addColumn("Direccion");
+        this.tabla.setModel(modelo);
     }
 
     /**
@@ -41,15 +81,17 @@ public class JFTraductor extends javax.swing.JFrame {
         TxtAreaObjeto = new javax.swing.JTextArea();
         BtnEnsamblar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        BtnDesensamblar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         BntLimpiarF = new javax.swing.JButton();
         BtnLimpiarO = new javax.swing.JButton();
         BtnAbrirO = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ensamblador");
+        setMinimumSize(new java.awt.Dimension(1147, 447));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         BtnAbrirF.setText("Abrir Archivo");
@@ -70,7 +112,7 @@ public class JFTraductor extends javax.swing.JFrame {
         TxtAreaObjeto.setRows(5);
         jScrollPane2.setViewportView(TxtAreaObjeto);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 260, 367));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 40, 260, 367));
 
         BtnEnsamblar.setText("Traducir  -->");
         BtnEnsamblar.addActionListener(new java.awt.event.ActionListener() {
@@ -82,14 +124,6 @@ public class JFTraductor extends javax.swing.JFrame {
 
         jLabel1.setText("Programa Fuente");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 12, -1, -1));
-
-        BtnDesensamblar.setText("<--- Traducir");
-        BtnDesensamblar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnDesensamblarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(BtnDesensamblar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 350, 230, 50));
 
         jLabel2.setText("Programa Objeto");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
@@ -116,13 +150,25 @@ public class JFTraductor extends javax.swing.JFrame {
                 BtnAbrirOActionPerformed(evt);
             }
         });
-        getContentPane().add(BtnAbrirO, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 420, 117, -1));
+        getContentPane().add(BtnAbrirO, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 420, 117, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/PIC.jpeg"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 230, 220));
-        jLabel3.getAccessibleContext().setAccessibleName("");
+
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tabla);
+
+        getContentPane().add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 290, 350));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAbrirFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAbrirFActionPerformed
@@ -142,23 +188,36 @@ public class JFTraductor extends javax.swing.JFrame {
 
     private void BtnEnsamblarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEnsamblarActionPerformed
         // TODO add your handling code here:
-         if(seleccionado.showDialog(this,"Ensamblar Código Fuente") == JFileChooser.APPROVE_OPTION ){
+        int fila = tabla.getRowCount();
+        for(int i=fila-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        
+         if(seleccionado.showDialog(this,"Traducir Código Fuente") == JFileChooser.APPROVE_OPTION ){
             archivo = seleccionado.getSelectedFile();
             String contenido = TxtAreaFuente.getText();
             String[] arrSplit = contenido.split("\\n"); 
-            contenido = "";
-            /* Hacer el paso de lectura del archivo para guardar la conversion a binario*/
-            for(int i=0;i<arrSplit.length;i++){
-                contenido += Instruccion(arrSplit[i]);
+            List<String> ConjuntoInstrucciones = Arrays.asList(arrSplit);
+            //System.out.println(ConjuntoInstrucciones);
+            String []info  = new String[4];
+            int cont = 1;
+            for(String i:ConjuntoInstrucciones){
+                dividirOpCode(i);
+                info[0] = ""+cont;
+                info[1] = Instruccion(getOpCode());
+                info[2] = bitAddress(getD());
+                info[3] = Direccion(getBitFile());
+                modelo.addRow(info);
+                cont++;
             }
             
-            String respuesta = Ensamblaje.EnsamblarTxt(archivo, contenido);
+            String respuesta = Ensamblaje.EnsamblarTxt(archivo,contenido);
             /*Reestriccion de formato de archivo, solo formato txt*/
             if(respuesta !=null ){
                 JOptionPane.showMessageDialog(null, respuesta);
                 TxtAreaObjeto.setText(contenido);
             }else{
-                JOptionPane.showMessageDialog(null, "Error al ensamblar");
+                JOptionPane.showMessageDialog(null, "Error al traducir");
             }
         }else{
                 JOptionPane.showMessageDialog(null, "Se debe guardar en formato de texto (txt)");
@@ -167,54 +226,55 @@ public class JFTraductor extends javax.swing.JFrame {
 
     public String Instruccion(String conte){
         /* Compare instruction for Bit a Bit */
-        switch(conte){
+        switch(conte.toUpperCase()){
             //BYTE-ORIENTED FILE REGISTER OPERATIONS
             //Generamos numeros entre 0-127 para los bits de registro
-            case "ADDWF":
-                return "00 0111 "+generar1Bit()+" "+generar7Bits()+"\n";
+            case "ADDWF" :
+                return "00 0111";
             case "ANDWF":
-                return "00 0101 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 0101";
             case "CLRF":
-                return "00 0001 1 "+generar7Bits()+"\n";
+                return "00 0001";
             case "CLRW":
-                return "00 0001 0000 0000\n";
+                return "00 0001";
             case "COMF":
-                return "00 1001 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1001";
             case "DECF":
-                return "00 0011 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 0011";
             case "DECFSZ":
-                return "00 1011 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1011";
             case "INCF":
-                return "00 1010 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1010";
             case "INCFSZ":
-                return "00 1111 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1111";
             case "IORWF":
-                return "00 0100 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 0100";
             case "MOVF":
-                return "00 1000 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1000";
             case "MOVWF":
-                return "00 0000 1 "+generar7Bits()+"\n";
+                return "00 0000";
             case "NOP":
-                return "00 0000 0000 0000\n";
+                return "00 0000 00";
             case "RLF":
-                return "00 1101 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1101";
             case "RRF":
-                return "00 1100 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1100";
             case "SUBWF":
-                return "00 0010 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 0010";
             case "SWAPF":
-                return "00 1110 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 1110";
             case "XORWF":
-                return "00 0110 "+generar1Bit()+" "+generar7Bits()+"\n";
+                return "00 0110";
+                
             //BIT-ORIENTED FILE REGISTER OPERATIONS
             case "BCF":
-                return "01 00 "+generar3Bits()+" "+generar7Bits()+"\n";
+                return "01 00";
             case "BSF":
-                return "01 01 "+generar3Bits()+" "+generar7Bits()+"\n";
+                return "01 01";
             case "BTFSC":
-                return "01 10 "+generar3Bits()+" "+generar7Bits()+"\n";
+                return "01 10";
             case "BTFSS":
-                return "01 11 "+generar3Bits()+" "+generar7Bits()+"\n";
+                return "01 11";
             //LITERAL AND CONTROL OPERATIONS
             case "ADDLW":
                 return "11 1110 kkkk kkkk\n";
@@ -248,110 +308,82 @@ public class JFTraductor extends javax.swing.JFrame {
         }
         return null;
     }
-    /* Completar los 7 bits restantes de las instrucciones */ 
-    public String generar7Bits(){
-        String sieteBits = "";
-        int numero = (int) (Math.random() * 127) + 1;
-        // completar los 7 bits   1  2   4    8   16  32  64
-        if(numero <2){
-            sieteBits = "0000001";
-        }else{//2bits el mayor puede ser 3
-            if(numero <4){
-                sieteBits="00000"+Integer.toBinaryString(numero);
-            }else{//3bits el mayor puede ser 7
-                if(numero<8){
-                    sieteBits="0000"+Integer.toBinaryString(numero);
-                }else{//4bits el mayor es 15
-                    if(numero<16){
-                        sieteBits="000"+Integer.toBinaryString(numero);
-                    }else{//5bits el mayor es 31
-                        if(numero<32){
-                            sieteBits="00"+Integer.toBinaryString(numero);
-                        }else{//6bits el mayor es 63
-                            if(numero<64){
-                                sieteBits="0"+Integer.toBinaryString(numero);
+    public String bitAddress(String b){
+        switch(b.toUpperCase()){
+            case "F":
+                return "1";
+            case "W":
+                return "0";
+            case "1":
+                return"1";
+            case "0":
+                return "0";
+            default:
+                JOptionPane.showMessageDialog(null, "Falta bit address");
+        }
+        return null;
+    }
+    public String Direccion(String direc){
+        String[] par = direc.split("x");
+        String hexadecimal = par[1];
+        //  "7F" = 127
+        int decimal = Integer.parseInt(hexadecimal, 16);
+        //System.out.printf("El hexadecimal %s es %d en hexadecimal usando Integer.parseInt\n", hexadecimal, decimal);
+        if(decimal >0 && decimal<128){
+            if(decimal == 1){
+                return "000 000 1";
+            }else{
+                if(decimal < 4){
+                    return "000 00"+Integer.toBinaryString(decimal);
+                }else{
+                    if(decimal < 8){
+                        return "000 0"+Integer.toBinaryString(decimal);
+                    }else{
+                        if(decimal < 16){
+                            return "000 "+Integer.toBinaryString(decimal);
+                        }else{
+                            if(decimal < 32){
+                                return "00 "+Integer.toBinaryString(decimal);
                             }else{
-                                    sieteBits=Integer.toBinaryString(numero);
+                                if(decimal < 64){
+                                    return "0 "+Integer.toBinaryString(decimal);
+                                }else{
+                                    return Integer.toBinaryString(decimal);
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        
-        return sieteBits;
-    }
-    public String generar3Bits(){
-        String tresBits = "";
-        int numero = (int) (Math.random() * 7) + 1;
-        // completar los 7 bits   1  2   4    8   16  32  64
-        if(numero <2){
-            tresBits = "00 1";
-        }else{//2bits el mayor puede ser 3
-            if(numero <4){
-                tresBits="0 "+Integer.toBinaryString(numero);
-            }else{//3bits el mayor puede ser 7
-                if(numero<8){
-                    tresBits=Integer.toBinaryString(numero);
-                }
-            }
-        }
-        
-        return tresBits;
-    }
-    public String generar1Bit(){
-        boolean b = Math.random() < 0.5;
-        if(b==true){
-            return "1";
         }else{
-            return "0";
+            JOptionPane.showMessageDialog(null, "Direccion incorrecta es mayor a 7F");
         }
+        return null;
     }
     
-   
-    private void BtnDesensamblarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDesensamblarActionPerformed
-        // TODO add your handling code here:
-        if(seleccionado.showDialog(this,"Desensamblar Código Objeto") == JFileChooser.APPROVE_OPTION ){
-            archivo = seleccionado.getSelectedFile();
-            String contenido = TxtAreaObjeto.getText();
-            //Aqui se convierte hexadecimal a decimal ascii
+    public void dividirOpCode(String opCode){
+        if(opCode == "CLRW" || opCode =="clrw" || opCode =="NOP" || opCode =="nop"){
+            String[] primerasDosPartes = opCode.split(" ");
+            setOpCode(primerasDosPartes[0]);
+            String[] segundaParte = primerasDosPartes[1].split(",");
+            setD(segundaParte[1]);
+            setBitFile(segundaParte[0]);
             
-            //String hex = "75546f7272656e745c436f6d706c657465645c6e667375635f6f73745f62795f6d757374616e675c50656e64756c756d2d392c303030204d696c65732e6d7033006d7033006d7033004472756d202620426173730050656e64756c756d00496e2053696c69636f00496e2053696c69636f2a3b2a0050656e64756c756d0050656e64756c756d496e2053696c69636f303038004472756d2026204261737350656e64756c756d496e2053696c69636f30303800392c303030204d696c6573203c4d757374616e673e50656e64756c756d496e2053696c69636f3030380050656e64756c756d50656e64756c756d496e2053696c69636f303038004d50330000";
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < contenido.length(); i+=2) {
-                String str = contenido.substring(i, i+2);
-                output.append((char)Integer.parseInt(str, 16));
-            }
-            //System.out.println(output);
-            
-            contenido =String.valueOf(output);
-            String respuesta = Ensamblaje.DesensamblarTxt(archivo, contenido);
-            if(respuesta !=null ){
-                JOptionPane.showMessageDialog(null, respuesta);
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                contenido.replace("Ú", "");
-                TxtAreaFuente.setText(contenido);
-            }else{
-                JOptionPane.showMessageDialog(null, "Error al Desensamblar");
-            }
         }else{
-                JOptionPane.showMessageDialog(null, "Se debe guardar en formato de texto (txt)");
-         }
+            String[] primerasDosPartes = opCode.split(" ");
+            setOpCode(primerasDosPartes[0]);
+            String[] segundaParte = primerasDosPartes[1].split(",");
+            setD(segundaParte[1]);
+            setBitFile(segundaParte[0]);
+            //System.out.println("OpCode: "+getOpCode()+"\nBinFile: "+getBitFile()+"\nBit d: "+getD());
+        }
+            
         
-    }//GEN-LAST:event_BtnDesensamblarActionPerformed
+    }
 
     private void BntLimpiarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BntLimpiarFActionPerformed
         // TODO add your handling code here:
         TxtAreaFuente.setText("");
-        
     }//GEN-LAST:event_BntLimpiarFActionPerformed
 
     private void BtnAbrirOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAbrirOActionPerformed
@@ -372,6 +404,10 @@ public class JFTraductor extends javax.swing.JFrame {
     private void BtnLimpiarOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLimpiarOActionPerformed
         // TODO add your handling code here:
         TxtAreaObjeto.setText("");
+        int fila = tabla.getRowCount();
+        for(int i=fila-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
     }//GEN-LAST:event_BtnLimpiarOActionPerformed
 
     /**
@@ -414,7 +450,6 @@ public class JFTraductor extends javax.swing.JFrame {
     private javax.swing.JButton BntLimpiarF;
     private javax.swing.JButton BtnAbrirF;
     private javax.swing.JButton BtnAbrirO;
-    private javax.swing.JButton BtnDesensamblar;
     private javax.swing.JButton BtnEnsamblar;
     private javax.swing.JButton BtnLimpiarO;
     private javax.swing.JTextArea TxtAreaFuente;
@@ -424,6 +459,8 @@ public class JFTraductor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
     void setLocationRelativeTo() {

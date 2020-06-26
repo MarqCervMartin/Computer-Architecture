@@ -33,7 +33,7 @@ public class MetodoEnsamblaje {
             salida = new FileOutputStream(archivo);
             byte[] bytesTxt = contenido.getBytes();
             salida.write(bytesTxt);
-            respuesta = "Se ensamblo correctamente";
+            respuesta = "Se ha traducido correctamente";
         }catch(Exception e){
         
         }
@@ -46,7 +46,7 @@ public class MetodoEnsamblaje {
             salida = new FileOutputStream(archivo);
             byte[] bytesTxt = contenido.getBytes();
             salida.write(bytesTxt);
-            respuesta = "Se desensamblo correctamente";
+            respuesta = "Se ha traducido correctamente";
         }catch(Exception e){
         
         }
